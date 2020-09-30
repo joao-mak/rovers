@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import calcRoverStatus from '../utils/calcRoverStatus';
+import Button from './Button';
 
 const ScreenWidth = Dimensions.get('window').width;
 
@@ -23,6 +24,32 @@ const RoverField = (props) => {
     const finalStr = rovers.join(', ');
     setOutput(finalStr);
     setReady(true);
+  };
+
+  const addRover = () => {
+    setRovers([...rovers, calcRoverStatus(plateau, status, moves)]);
+    setStatus('');
+    setMoves('');
+  };
+
+  const getRoversFinalStatus = () => {
+    printOutput();
+    setStatus('');
+    setMoves('');
+  };
+
+  const resetPlateau = () => {
+    setStatus('');
+    setMoves('');
+    setPlateau(null);
+    setReady(false);
+  };
+
+  const resetRovers = () => {
+    setStatus('');
+    setMoves('');
+    setRovers([]);
+    setReady(false);
   };
 
   return (
@@ -55,48 +82,13 @@ const RoverField = (props) => {
             placeholder={'e.g. RMMRLMLM'}
             value={moves}
           />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setRovers([...rovers, calcRoverStatus(plateau, status, moves)]);
-              setStatus('');
-              setMoves('');
-            }}
-          >
-            <Text style={styles.button_text}>Add rover</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              printOutput();
-              setStatus('');
-              setMoves('');
-            }}
-          >
-            <Text style={styles.button_text}>Get rovers' final status</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setStatus('');
-              setMoves('');
-              setPlateau(null);
-              setReady(false);
-            }}
-          >
-            <Text style={styles.button_text}>Reset plateau</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              setStatus('');
-              setMoves('');
-              setRovers([]);
-              setReady(false);
-            }}
-          >
-            <Text style={styles.button_text}>Reset rovers</Text>
-          </TouchableOpacity>
+          <Button handlePress={addRover} title={'Add rover'} />
+          <Button
+            handlePress={getRoversFinalStatus}
+            title={"Get rovers' final status"}
+          />
+          <Button handlePress={resetPlateau} title={'Reset Plateau'} />
+          <Button handlePress={resetRovers} title={'Reset rovers'} />
         </View>
       )}
 
